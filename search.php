@@ -143,47 +143,9 @@ html {
 </style>
  </head>
  <body>
- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="/index.html"><b>Scambi</b></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarColor01">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/index.html">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="home.php?pw="root">Annunci</a> <span class="sr-only">(current)</span></a>
-      </li>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/about.html">About</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0" action="/search.php">
-      <input class="form-control mr-sm-2" type="text" placeholder="Cerca nel sito" name="testo">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Cerca</button>
-    </form>
-  </div>
-</nav>
 <div class="error">404</div>
 <br /><br />
-<span class="info">Pagina in via di sviluppo. Vai alla <a herf="home.php?pw=root">home</a>.</span>
+<span class="info">Pagina in via di sviluppo.</span>
 <img src="http://images2.layoutsparks.com/1/160030/too-much-tv-static.gif" class="static" />
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<small class="form-text text-muted">
-    Creato da <a>Luca Gamerro.</a> <a href="#top">   Torna su</a>
-</small>
 </body>
 </html>
