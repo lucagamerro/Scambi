@@ -80,7 +80,7 @@ $query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FR
   </div>
 </nav>
 <br>
-<?php if ($pw == 'root'): ?>
+<?php if ($pw == '****'): ?>
 <h3>
   Annunci
   <small class="text-muted">ecco le ricerche.</small>
