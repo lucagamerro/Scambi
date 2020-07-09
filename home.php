@@ -29,7 +29,7 @@ if ($mysqli->connect_error) {
   <!-- Modernizr -->
   <script src="js/modernizr.custom.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <!-- respond.js per IE8 --> 
   <!--[if lt IE 9]>
   <script src="js/respond.min.js"></script>
@@ -71,14 +71,22 @@ if ($mysqli->connect_error) {
 <br>
 <div id="#centrato"><button type="button" class="btn btn-primary btn-lg"><a href="/new.php" style="color:white;">Nuovo annuncio</a></button></div>
 <br>
-<p>--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
 <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link " data-toggle="tab" @click="cambia('Offro')">Offro</a>
+        <div v-if="page == 'Offro'">
+          <a class="nav-link active" data-toggle="tab" @click="cambia('Offro')">Offro</a>        
+        </div>
+        <div v-if="page == 'Cerco'">
+          <a class="nav-link" data-toggle="tab" @click="cambia('Offro')">Offro</a>        
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" @click="cambia('Cerco')">Cerco</a>
-      </li>
+      <div v-if="page == 'Offro'">
+          <a class="nav-link" data-toggle="tab" @click="cambia('Cerco')">Cerco</a>        
+        </div>
+        <div v-if="page == 'Cerco'">
+          <a class="nav-link active" data-toggle="tab" @click="cambia('Cerco')">Cerco</a>        
+      </div>
 </ul>
 <div v-if="page == 'Offro'">
 <table class="table table-hover">
@@ -141,6 +149,8 @@ if ($query->num_rows > 0) {
   echo '<br><h3>Tutto tace...   <small class="text-muted">   Crea un nuovo annuncio</small></h3><br>';
 }
 ?>  
+  </tbody>
+</table> 
 </div>
 <?php else: ?> 
   <div class="alert alert-dismissible alert-warning">
@@ -148,15 +158,22 @@ if ($query->num_rows > 0) {
   <h4 class="alert-heading">Attenzione!</h4>
   <p class="mb-0">La password inserita è errata. <a href="/index.html" class="alert-link">Riprova</a>.</p>
 </div>
+
 <?php endif; ?>
 <br>
 <br>
-  <small class="form-text text-muted">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<small class="form-text text-muted">
       Creato da <a>Luca Gamerro.</a> <a href="#top">   Torna su</a>
   </small>
 </div>
  <script src="http://code.jquery.com/jquery.js"></script>
- <script src="script.js"></script>
+ <script src="js/script.js"></script>
  <script src="/bootstrap.min.js">import 'bootswatch/dist/slate/bootstrap.min.css';</script>
  </body>
 </html>
