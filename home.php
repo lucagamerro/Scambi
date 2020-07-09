@@ -12,15 +12,12 @@ if ($mysqli->connect_error) {
   die('Errore di connessione (' . $mysqli->connect_errno . ') '
     . $mysqli->connect_error);
 }
-
-// SQL
-$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci ORDER BY titolo");
-
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" ><![endif]-->
 <!--[if gt IE 8]><!--><html class="no-js" ><!--<![endif]-->
 <html>
+<body>
  <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,12 +28,15 @@ $query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FR
   <link href="css/stili-custom.css" rel="stylesheet" media="screen">
   <!-- Modernizr -->
   <script src="js/modernizr.custom.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  <link rel="stylesheet" href="bootstrap.min.css">
   <!-- respond.js per IE8 --> 
   <!--[if lt IE 9]>
   <script src="js/respond.min.js"></script>
   <![endif]-->
  </head>
  <body>
+<div id="app">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="/index.html"><b>Scambi</b></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,14 +46,14 @@ $query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FR
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/index.html">Home <span class="sr-only"></span></a>
+        <a class="nav-link" href="/index.html">Home </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="home.php">Annunci <span class="sr-only">(current)</span></a>
+        <a class="nav-link active" href="home.php">Annunci <span class="sr-only">(current)</span></a>
       </li>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/about.html">About <span class="sr-only"></span></a>
+        <a class="nav-link" href="/about.html">About </a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" action="/search.php">
@@ -73,12 +73,12 @@ $query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FR
 <br>
 <p>--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
 <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link active" data-toggle="tab" @click="cambia('Offro')">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" @click="cambia('Cerco')">Profile</a>
-  </li>
+      <li class="nav-item">
+        <a class="nav-link " data-toggle="tab" @click="cambia('Offro')">Offro</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" @click="cambia('Cerco')">Cerco</a>
+      </li>
 </ul>
 <div v-if="page == 'Offro'">
 <table class="table table-hover">
@@ -94,15 +94,16 @@ $query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FR
   </thead>
   <tbody>
 <?php 
-    // Dati
+$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci WHERE offrocerco='0' ORDER BY titolo");
+
 if ($query->num_rows > 0) {
     while ($row = $query->fetch_assoc()) {
       if ($row['offrocerco'] == 0):
         $categoria = 'Offro';
-        echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-primary btn-lg" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr> <br>';
       else:
         $categoria = 'Cerco';
       endif;
+      echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-primary btn-lg" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr> <br>';
     }
 } else {
   echo '<br><h3>Tutto tace...   <small class="text-muted">   Crea un nuovo annuncio</small></h3><br>';
@@ -124,21 +125,22 @@ if ($query->num_rows > 0) {
       </tr>
     </thead>
     <tbody>
-  <?php 
-      // Dati
-  if ($query->num_rows > 0) {
-      while ($row = $query->fetch_assoc()) {
-        if ($row['offrocerco'] == 0):
-          $categoria = 'Offro';
-        else:
-          $categoria = 'Cerco';
-          echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-primary btn-lg" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr> <br>';
-        endif;
-      }
-  } else {
-    echo '<br><h3>Tutto tace...   <small class="text-muted">   Crea un nuovo annuncio</small></h3><br>';
-  }
-  ?>  
+<?php 
+$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci WHERE offrocerco='1' ORDER BY titolo");
+
+if ($query->num_rows > 0) {
+    while ($row = $query->fetch_assoc()) {
+      if ($row['offrocerco'] == 0):
+        $categoria = 'Offro';
+      else:
+        $categoria = 'Cerco';
+      endif;
+      echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-primary btn-lg" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr> <br>';
+    }
+} else {
+  echo '<br><h3>Tutto tace...   <small class="text-muted">   Crea un nuovo annuncio</small></h3><br>';
+}
+?>  
 </div>
 <?php else: ?> 
   <div class="alert alert-dismissible alert-warning">
@@ -152,22 +154,9 @@ if ($query->num_rows > 0) {
   <small class="form-text text-muted">
       Creato da <a>Luca Gamerro.</a> <a href="#top">   Torna su</a>
   </small>
-  <script>
-    var app = new Vue({
-      el: '#app',
-    data() {
-      return {
-        page: 'Offro'
-      };
-    },
-    methods: {
-      cambia (p) {
-        this.page = p
-      }
-    }
-    });
-    </script>
+</div>
  <script src="http://code.jquery.com/jquery.js"></script>
+ <script src="script.js"></script>
  <script src="/bootstrap.min.js">import 'bootswatch/dist/slate/bootstrap.min.css';</script>
  </body>
 </html>
