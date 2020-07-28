@@ -12,6 +12,21 @@ if ($mysqli->connect_error) {
   die('Errore di connessione (' . $mysqli->connect_errno . ') '
     . $mysqli->connect_error);
 }
+
+$file = $_SERVER['DOCUMENT_ROOT'] . 'contatore.txt';
+$visite = file($file);
+$visite[0]++;
+$fp = fopen($file , "w");
+fputs($fp , "$visite[0]");
+fclose($fp);
+function view_tot_entries() {
+  // recupero il numero di accessi
+  $file = $_SERVER['DOCUMENT_ROOT'] . 'contatore.txt';
+  $fp = fopen($file, "r");
+  $tot = fgets($fp, 4096);
+  fclose($fp);
+  return $tot;
+}
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" ><![endif]-->
@@ -22,14 +37,12 @@ if ($mysqli->connect_error) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scambi</title>
+  <title>Scambi - homepage</title>
   <!-- Fogli di stile -->
-  <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-  <link href="css/stili-custom.css" rel="stylesheet" media="screen">
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
   <!-- Modernizr -->
   <script src="js/modernizr.custom.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
   <!-- respond.js per IE8 --> 
   <!--[if lt IE 9]>
   <script src="js/respond.min.js"></script>
@@ -37,44 +50,44 @@ if ($mysqli->connect_error) {
  </head>
  <body>
 <div id="app">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/index.html"><b>Scambi</b></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarColor01">
+  <div class="collapse navbar-collapse" id="navbarColor02">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/index.html">Home </a>
+      <li class="nav-item">
+        <a class="nav-link active" href="home.php?pw=rivoli">Annunci <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="home.php">Annunci <span class="sr-only">(current)</span></a>
-      </li>
+        <a class="nav-link" href="/new.php">Nuovo </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/about.html">About </a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0" action="/search.php">
-      <input class="form-control mr-sm-2" type="text" placeholder="Cerca nel sito" name="testo">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Cerca</button>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="btn btn-primary my-2 my-sm-0" type="submit"  href="/index.html">Logout</a>
     </form>
   </div>
 </nav>
 <br>
-<?php if ($pw == 'root'): ?>
+<?php if ($pw == 'rivoli'): ?>
+<div class="centrato">
 <h3>
   Annunci
   <small class="text-muted">ecco le ricerche.</small>
 </h3>
 <br>
-<div id="#centrato"><button type="button" class="btn btn-primary btn-lg"><a href="/new.php" style="color:white;">Nuovo annuncio</a></button></div>
+<a href="/new.php" type="button" class="btn btn-primary btn-lg btn-secondary" style="color:white;">Nuovo annuncio</a>
 <br>
+</div>
 <ul class="nav nav-tabs">
       <li class="nav-item">
         <div v-if="page == 'Offro'">
-          <a class="nav-link active" data-toggle="tab" @click="cambia('Offro')">Offro</a>        
+          <a class="nav-link" data-toggle="tab" @click="cambia('Offro')">Offro</a>        
         </div>
         <div v-if="page == 'Cerco'">
           <a class="nav-link" data-toggle="tab" @click="cambia('Offro')">Offro</a>        
@@ -89,6 +102,7 @@ if ($mysqli->connect_error) {
       </div>
 </ul>
 <div v-if="page == 'Offro'">
+<br>
 <table class="table table-hover">
   <thead>
     <tr class="table-primary">
@@ -102,7 +116,7 @@ if ($mysqli->connect_error) {
   </thead>
   <tbody>
 <?php 
-$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci WHERE offrocerco='0' ORDER BY titolo");
+$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci WHERE offrocerco='0' ORDER BY cast(data as datetime) asc");
 
 if ($query->num_rows > 0) {
     while ($row = $query->fetch_assoc()) {
@@ -111,7 +125,7 @@ if ($query->num_rows > 0) {
       else:
         $categoria = 'Cerco';
       endif;
-      echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-primary btn-lg" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr> <br>';
+      echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-info" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr>';
     }
 } else {
   echo '<br><h3>Tutto tace...   <small class="text-muted">   Crea un nuovo annuncio</small></h3><br>';
@@ -121,6 +135,7 @@ if ($query->num_rows > 0) {
 </table> 
 </div>
 <div v-if="page == 'Cerco'">
+    <br>
   <table class="table table-hover">
     <thead>
       <tr class="table-primary">
@@ -134,7 +149,7 @@ if ($query->num_rows > 0) {
     </thead>
     <tbody>
 <?php 
-$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci WHERE offrocerco='1' ORDER BY titolo");
+$query = $mysqli->query("SELECT titolo, offrocerco, nome, email, data, titolo FROM annunci WHERE offrocerco='1' ORDER BY cast(data as datetime) asc");
 
 if ($query->num_rows > 0) {
     while ($row = $query->fetch_assoc()) {
@@ -143,7 +158,7 @@ if ($query->num_rows > 0) {
       else:
         $categoria = 'Cerco';
       endif;
-      echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-primary btn-lg" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr> <br>';
+      echo '<tr><th scope="row">' . $row['titolo'] . '</th><td>' . $categoria . '</td><td>' . $row['nome'] . '</td><td>' . $row['email'] . '</td><td>' . $row['data'] . '</td> <td><a class="btn btn-info" href="/view.php?titolo=' . $row['titolo'] . '">vedi</a><td></tr>';
     }
 } else {
   echo '<br><h3>Tutto tace...   <small class="text-muted">   Crea un nuovo annuncio</small></h3><br>';
@@ -151,6 +166,7 @@ if ($query->num_rows > 0) {
 ?>  
   </tbody>
 </table> 
+<br><br><br>
 </div>
 <?php else: ?> 
   <div class="alert alert-dismissible alert-warning">
@@ -168,10 +184,60 @@ if ($query->num_rows > 0) {
 <br>
 <br>
 <br>
+<br>
 <small class="form-text text-muted">
-      Creato da <a>Luca Gamerro.</a> <a href="#top">   Torna su</a>
+      Creato da <a>Luca Gamerro. Visitato <?php echo view_tot_entries(); ?> volte.</a> <a href="#top">   Torna su</a>
   </small>
 </div>
+<style>
+.centrato {
+    margin: 10px;
+}
+
+th {
+    font-weight: 500;
+}
+
+a {
+    cursor: pointer;
+}
+@media only screen and  (max-width: 760px) {
+
+    td, tr { display: block; }
+    
+    /* Hide table headers (but not display: none;, for accessibility) */
+    
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    
+    tr { border: 1px solid #78c2ad; }
+    
+    tr + tr { margin-top: 1.5em; }
+    
+    td {
+      /* make like a "row" */
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50%;
+      background-color: #F8D9D5;
+      text-align: left;
+    }
+    
+    td:before {
+      content: attr(data-label);
+      display: inline-block;
+      line-height: 1.5;
+      margin-left: -100%;
+      width: 100%;
+      white-space: nowrap;
+    }
+}
+  
+</style>
  <script src="http://code.jquery.com/jquery.js"></script>
  <script src="js/script.js"></script>
  <script src="/bootstrap.min.js">import 'bootswatch/dist/slate/bootstrap.min.css';</script>

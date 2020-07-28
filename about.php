@@ -1,6 +1,5 @@
-<?php 
-$titolo = $_GET['titolo'];
-$foto = '<img src="https://gasquemais.000webhostapp.com/var/www/foto/">' . $titolo;
+<?php
+$titolo = 'about';
 
 // Connessione al database
 $mysqli = new mysqli('localhost', 'id14056239_gasquemais', 'Gamerro*2005', 'id14056239_annunci');
@@ -18,9 +17,6 @@ while($row = $query->fetch_assoc()) {
   $testo = $row["testo"];
   $attivo = $row["attivo"];
 }
-
-$email = 'mailto:' . $email;
-$telefono = 'https://api.whatsapp.com/send?phone=' . $telefono;
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" ><![endif]-->
@@ -30,7 +26,7 @@ $telefono = 'https://api.whatsapp.com/send?phone=' . $telefono;
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scambi - <?php echo $titolo; ?></title>
+  <title>Scambi - about</title>
   <!-- Fogli di stile -->
   <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
   <!-- Modernizr -->
@@ -41,7 +37,7 @@ $telefono = 'https://api.whatsapp.com/send?phone=' . $telefono;
   <![endif]-->
  </head>
  <body>
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/index.html"><b>Scambi</b></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -50,13 +46,13 @@ $telefono = 'https://api.whatsapp.com/send?phone=' . $telefono;
   <div class="collapse navbar-collapse" id="navbarColor02">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link active" href="home.php?pw=rivoli">Annunci <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/index.html">Annunci </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/new.php">Nuovo </a>
+        <a class="nav-link" href="/index.html">Nuovo </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/about.html">About </a>
+        <a class="nav-link active" href="/about.html">About <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -64,40 +60,22 @@ $telefono = 'https://api.whatsapp.com/send?phone=' . $telefono;
     </form>
   </div>
 </nav>
-<br>
-<br>
+<br><br>
 <div class="jumbotron">
-  <h1 class="display-3"> <?php echo $titolo;?></h1> 
-  <p class="lead"> <?php echo $nome;?> </p>
-  <hr class="my-4">
-  <p><?php echo $testo;?></p>
-<?php if(file_exists('/storage/ssd1/239/14056239/public_html/foto/' . $titolo . '.jpg')): ?>
-  <img src="https://gasquemais.000webhostapp.com/foto/<?php echo $titolo; ?>.jpg" class="imma"> <br> <br>
-<?php endif; ?>
-  <p class="lead">
-    <a class="btn btn-secondary btn-lg mar" href=<?php echo $telefono; ?> target="_blank" role="button">Mandami un whatsapp</a>
-    <?php if ($email == 'mailto:nascosta'):?>
-      <a class="btn btn-info disabled mar" role="button">Contatami via mail</a>
-    <?php else:?>
-      <a class="btn btn-info btn-lg mar" href=<?php echo $email;?> role="button">Contattami via mail</a>
-    <?php endif; ?>
-    <a class="btn btn-primary btn-lg mar" href="#comm" role="button">Commenti</a>
-    <a class="btn btn-primary btn-lg btn-danger mar" href="/completato.php?titolo=<?php echo $titolo;?>" > Elimina (irreversibile)</a>
-  </p>
+<h2>About</h2>
+<br>
+<p>Queto sito è creato da Luca Gamerro. Il codice è rilasciato sotto la licenza MIT.  Essendo open source, trovi il codice aggiornato su <a href="https://github.com/lucagamerro/Scambi" target="_blak">Github</a>. <br>
+    Puoi inoltre guardare il <a href="#video">video</a> di presentazione del sito e lasciare un <a href="#comm">commento</a>. Per informazioni, consigli o altro non esitare a contattarmi via mail a 
+    <a href="mailto:sitoscambi@gmail.com">sitoscambi@gmail.com</a>. <br>
+    Ciao!</p><br>
+<p class="lead">Luca Gamerro</p>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<p id="comm"></p>
+<br><br><br><br><br><br><br><br id="video">
+<h3>Video di presentazione: </h3>
+<p class="videoH">
+<iframe class="video" src="https://www.youtube.com/embed/G9nJq0Jly7M?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>
+<br><br><br><br><br><br><br><br id="comm">
 <div class="section">
 <h2>Commenti</h2>
 <?php 
@@ -123,7 +101,6 @@ if ($query->num_rows > 0) {
     <div class="form-group">
       <label for="exampleTextarea">Testo commento</label>
       <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Inserisci il testo del commento" name="testo"></textarea>
-
     </div>
     <button type="submit" class="btn btn-primary">Invia</button>
   </fieldset>
@@ -136,6 +113,9 @@ if ($query->num_rows > 0) {
 <style>
 html {
   scroll-behavior: smooth;
+}
+.videoH {
+    text-align: center;
 }
 .section {
     margin-left: 15px;
@@ -172,6 +152,10 @@ html {
     margin-top: 25px;
     margin-bottom: 50px;
 }
+.video {
+    width: 800px;
+    height: 550px;
+}
 @media only screen and  (max-width: 760px) {
 .box {
     width: 325px;
@@ -190,8 +174,9 @@ html {
     width: 293px;
     height: 250px;
 }
-.mar {
-    margin-top: 10px;
+.video {
+    width: 355px;
+    height: 244px;
 }
 }
 </style>
