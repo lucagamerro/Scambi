@@ -18,9 +18,6 @@ Il sito funziona grazie a **PHP**, **mySQL** e **Javascript**. Ecco uno schema d
 3. Javascript (in particolare **Vue.js**) gestisce la visualizzazione degli annunci. 
 4. per finire PHP **rimuove** i dati dal database.
 
-## Ringraziamenti?
-> *boh*
-
 ## Contatti
 Vuoi darmi un **suggerimento**, un'**idea** o chiedermi informazioni? Contattami!
 
