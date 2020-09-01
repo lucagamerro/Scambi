@@ -1,0 +1,16 @@
+RewriteEngine on
+
+# html shorter
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+
+RewriteRule ^ /%1 [NC,L,R]
+
+RewriteCond %{REQUEST_FILENAME}.html -f
+
+RewriteRule ^ %{REQUEST_URI}.html [NC,L]
+
+#other default stuff
+ErrorDocument 404 https://gasquemais.000webhostapp.com/404
+# HTID:14418592: DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES BELOW
+php_value display_errors 1
+# DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES ABOVE HTID:14418592:
