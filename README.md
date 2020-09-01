@@ -33,4 +33,5 @@ Oppure puoi scrivere un **commento** direttamente sul sito:
 
  [Scrivi un commento](https://gasquemais.000webhostapp.com/about.php#comm)
 ___
-Creato da @lucagamerro
+
+Made with ❤️ by lucagamerro
